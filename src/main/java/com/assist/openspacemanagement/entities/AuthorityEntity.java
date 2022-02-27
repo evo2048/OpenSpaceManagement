@@ -18,10 +18,9 @@ public class AuthorityEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer authorityId;
 
-    @Column(length = 15)
+    @Column
     String role;
 
-    @Column
     @OneToMany(mappedBy = "authority")
     @JsonIgnore
     private List<UserEntity> users;
