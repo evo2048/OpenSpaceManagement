@@ -19,6 +19,9 @@ public class UserEntity {
     private Integer userId;
 
     @Column
+    String username;
+
+    @Column
     private String fristName;
 
     @Column
@@ -40,16 +43,7 @@ public class UserEntity {
     private String nationality;
 
     @Column
-    private boolean accountEnabled = true;
-
-    @Column
-    private boolean accountExpired = false;
-
-    @Column
-    private boolean passwordExpired = false;
-
-    @Column
-    private boolean accountLocked = false;
+    private boolean accountEnabled;
 
     @ManyToOne
     @JoinColumn(name = "authorityId")

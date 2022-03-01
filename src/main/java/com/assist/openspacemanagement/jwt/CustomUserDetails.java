@@ -1,4 +1,4 @@
-package com.assist.openspacemanagement.services;
+package com.assist.openspacemanagement.jwt;
 
 import com.assist.openspacemanagement.entities.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ public class CustomUserDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> list = new ArrayList<>();
-        list.add(new SimpleGrantedAuthority("ROLE_" + userEntity.getAuthority()));
+        list.add(new SimpleGrantedAuthority(userEntity.getAuthority().getRole()));
         return list;
     }
 
@@ -33,15 +33,15 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return !userEntity.isAccountExpired();
+        return true;
     }
 
     @Override
-    public boolean isAccountNonLocked() { return !userEntity.isAccountLocked(); }
+    public boolean isAccountNonLocked() { return true; }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return !userEntity.isPasswordExpired();
+        return true;
     }
 
     @Override
