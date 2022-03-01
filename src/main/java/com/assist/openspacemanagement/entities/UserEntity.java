@@ -62,4 +62,7 @@ public class UserEntity {
     @OneToOne(mappedBy = "userAssigned")
     private DeskEntity deskAssigned;
 
+    @OneToOne(mappedBy = "user")
+    private RemoteWorkRequestsEntity remoteWorkRequest;
+
 }
