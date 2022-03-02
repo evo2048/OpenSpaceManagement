@@ -7,14 +7,14 @@ import com.assist.openspacemanagement.services.CustomUserDetailsService;
 import com.assist.openspacemanagement.services.JwtUtilService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @RestController
 public class AuthController {
@@ -35,12 +35,13 @@ public class AuthController {
     }
 
     @PostMapping(value = "/login")
-    public Object login(@RequestBody UserEntity user, HttpServletResponse response) {
+    public Object login(@RequestBody UserEntity user, HttpServletResponse response) throws IOException {
 
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
-        } catch (BadCredentialsException e) {
-            throw new BadCredentialsException("Invalid email or password.", e);
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return false;
         }
 
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(user.getEmail());
@@ -53,12 +54,14 @@ public class AuthController {
         cookie.setPath("/");
         response.addCookie(cookie);
 
-        return true;
+        CustomUserDetails customUserDetails = (CustomUserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        user = customUserDetails.getUserEntity();
+        return user;
     }
+
     @GetMapping("/getDetails")
-    public UserEntity getDetails() {
-        //TODO JWT
-        return null;
+    public Object getDetails() {
+        return "Role based auth works.";
     }
 
 }

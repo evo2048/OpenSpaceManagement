@@ -36,18 +36,17 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String path = request.getRequestURI();
         Cookie[] cookies = request.getCookies();
 
-        if(path.equals("/login")) {
+        if(path.equals("/login") && cookies == null) {
             filterChain.doFilter(request, response);
             return;
         }
 
         if(cookies!=null && cookies.length>0) {
             for (Cookie cookie : cookies)
-                if (cookie.equals("JWToken")) {
+                if (cookie.getName().equals("JWToken")) {
                     token = cookie.getValue();
                     username = jwtUtilService.extractUsername(token);
                 }
-
             if(username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails userDetails = this.customUserDetailsService.loadUserByUsername(username);
                 if(jwtUtilService.validateToken(token, userDetails)) {

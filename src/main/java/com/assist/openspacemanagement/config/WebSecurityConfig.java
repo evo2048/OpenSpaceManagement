@@ -52,11 +52,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().cors();
         http.authorizeRequests()
-                .antMatchers("/admin/*").hasAuthority("ADMIN")
+                .antMatchers("/admin/*", "/getDetails").hasAuthority("ADMIN")
                 .antMatchers("/office-management/*").hasAuthority("OFFICE_ADMIN")
                 .antMatchers("/user/*").hasAuthority("USER")
-                .antMatchers("/login", "/login/*").permitAll()
-                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .antMatchers("/login", "/login/*", "/getDetails").permitAll();
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
