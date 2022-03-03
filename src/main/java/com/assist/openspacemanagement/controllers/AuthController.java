@@ -35,13 +35,12 @@ public class AuthController {
     }
 
     @PostMapping(value = "/login")
-    public Object login(@RequestBody UserEntity user, HttpServletResponse response) throws IOException {
+    public UserEntity login(@RequestBody UserEntity user, HttpServletResponse response) throws IOException {
 
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return false;
         }
 
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(user.getEmail());
@@ -59,9 +58,11 @@ public class AuthController {
         return user;
     }
 
-    @GetMapping("/getDetails")
-    public Object getDetails() {
-        return "Role based auth works.";
+    @GetMapping(value = "/get-user-details")
+    public UserEntity getUserDetails() {
+        CustomUserDetails customUserDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserEntity user = customUserDetails.getUserEntity();
+        return user;
     }
 
 }
