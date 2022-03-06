@@ -16,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Service
@@ -37,7 +38,7 @@ public class AuthService implements IAuthService{
     }
 
     @Override
-    public ResponseEntity<User> authentication(User user, HttpServletResponse response) {
+    public ResponseEntity<String> authentication(User user, HttpServletResponse response) {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
         } catch (Exception e) {
@@ -54,10 +55,28 @@ public class AuthService implements IAuthService{
         cookie.setPath("/");
         response.addCookie(cookie);
 
+        //urmatoarea linie genereaza cast exception
+        /*
         CustomUserDetails customUserDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         user = customUserDetails.getUserEntity();
+        */
+        CustomUserDetails customUserDetails = (CustomUserDetails) userDetails;
+        return new ResponseEntity<>(customUserDetails.getUserEntity().getAuthority().getRole(), HttpStatus.OK);
+    }
 
-        return new ResponseEntity<>(user, HttpStatus.OK);
+    //delete cookies
+    @Override
+    public ResponseEntity<String> logout(HttpServletRequest request,HttpServletResponse response) {
+        Cookie[] cookies = request.getCookies();
+        if(cookies != null) {
+            for (Cookie cookie : cookies) {
+                cookie.setValue("");
+                cookie.setPath("/");
+                cookie.setMaxAge(0);
+                response.addCookie(cookie);
+            }
+        }
+        return new ResponseEntity<>("Logout with succes!",HttpStatus.OK);
     }
 
     @Override

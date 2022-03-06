@@ -53,7 +53,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/office-management/*").hasAuthority("OFFICE_ADMIN")
                 .antMatchers("/user/*").hasAuthority("USER")
                 .antMatchers("/get-user-details").hasAnyAuthority("USER", "OFFICE_ADMIN", "ADMIN")
-                .antMatchers("/login", "/login/*", "/getDetails").permitAll();
+                .antMatchers("office/login", "office/logout", "/getDetails").permitAll();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }

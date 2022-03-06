@@ -39,14 +39,6 @@ public class User {
     @Column
     private boolean accountEnabled = true;
 
-    @Column
-    private boolean accountExpired = false;
-
-    @Column
-    private boolean passwordExpired = false;
-
-    @Column
-    private boolean accountLocked = false;
 
     @ManyToOne
     @JoinColumn(name = "authorityId")
@@ -59,8 +51,6 @@ public class User {
     @OneToOne(mappedBy = "userAssigned")
     private Desk deskAssigned;
 
-    @OneToOne(mappedBy = "user")
-    private RemoteWork remoteWorkRequest;
 
     public Integer getUserId() {
         return userId;
@@ -134,30 +124,6 @@ public class User {
         this.accountEnabled = accountEnabled;
     }
 
-    public boolean isAccountExpired() {
-        return accountExpired;
-    }
-
-    public void setAccountExpired(boolean accountExpired) {
-        this.accountExpired = accountExpired;
-    }
-
-    public boolean isPasswordExpired() {
-        return passwordExpired;
-    }
-
-    public void setPasswordExpired(boolean passwordExpired) {
-        this.passwordExpired = passwordExpired;
-    }
-
-    public boolean isAccountLocked() {
-        return accountLocked;
-    }
-
-    public void setAccountLocked(boolean accountLocked) {
-        this.accountLocked = accountLocked;
-    }
-
     public Authority getAuthority() {
         return authority;
     }
@@ -182,11 +148,4 @@ public class User {
         this.deskAssigned = deskAssigned;
     }
 
-    public RemoteWork getRemoteWorkRequest() {
-        return remoteWorkRequest;
-    }
-
-    public void setRemoteWorkRequest(RemoteWork remoteWorkRequest) {
-        this.remoteWorkRequest = remoteWorkRequest;
-    }
 }

@@ -12,7 +12,9 @@ public class RemoteWork {
     @Column
     String status;
 
-    @OneToOne
-    @JoinColumn(name = "userId")
-    private User user;
+    @Column
+    private Integer senderId;
+
+    @Column
+    private Integer receiveId;
 }
