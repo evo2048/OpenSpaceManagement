@@ -1,6 +1,6 @@
-package com.assist.openspacemanagement.security.jwt;
+package com.assist.openspacemanagement.utils.jwt;
 
-import com.assist.openspacemanagement.security.CustomUserDetailsService;
+import com.assist.openspacemanagement.utils.userDetails.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;

@@ -1,6 +1,7 @@
-package com.assist.openspacemanagement.security;
+package com.assist.openspacemanagement.config;
 
-import com.assist.openspacemanagement.security.jwt.JwtRequestFilter;
+import com.assist.openspacemanagement.utils.userDetails.CustomUserDetailsService;
+import com.assist.openspacemanagement.utils.jwt.JwtRequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -49,11 +50,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().cors();
         http.authorizeRequests()
-                .antMatchers("/admin/*", "/getDetails").hasAuthority("ADMIN")
+                .antMatchers("/office/admin/*", "/getDetails").hasAuthority("ADMIN")
                 .antMatchers("/office-management/*").hasAuthority("OFFICE_ADMIN")
                 .antMatchers("/user/*").hasAuthority("USER")
-                .antMatchers("/get-user-details").hasAnyAuthority("USER", "OFFICE_ADMIN", "ADMIN")
-                .antMatchers("office/login", "office/logout", "/getDetails").permitAll();
+                .antMatchers("/office/get-user-details").hasAnyAuthority("USER", "OFFICE_ADMIN", "ADMIN")
+                .antMatchers("/office/login", "/office/logout").permitAll();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }

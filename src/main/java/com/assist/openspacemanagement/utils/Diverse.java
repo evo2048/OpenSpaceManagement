@@ -4,6 +4,7 @@ import com.assist.openspacemanagement.authority.Authority;
 import com.assist.openspacemanagement.user.User;
 import net.minidev.json.JSONObject;
 
+
 public class Diverse {
     public static User jsonToUser(JSONObject jsonObject){
         User user = new User();
@@ -20,7 +21,8 @@ public class Diverse {
             val = 2;
         else if (role.equals("EMPLOYEE"))
             val = 3;
-        else  val = 1;
+        else
+            val = 1;
 
         Authority authority = new Authority();
         authority.setAuthorityId(val);

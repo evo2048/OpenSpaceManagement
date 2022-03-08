@@ -1,17 +1,14 @@
 package com.assist.openspacemanagement.authentication;
 
-import com.assist.openspacemanagement.security.CustomUserDetails;
-import com.assist.openspacemanagement.security.CustomUserDetailsService;
-import com.assist.openspacemanagement.security.jwt.JwtUtilService;
+import com.assist.openspacemanagement.utils.userDetails.CustomUserDetails;
+import com.assist.openspacemanagement.utils.userDetails.CustomUserDetailsService;
+import com.assist.openspacemanagement.utils.jwt.JwtUtilService;
 import com.assist.openspacemanagement.user.User;
-import com.assist.openspacemanagement.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,13 +22,11 @@ public class AuthService implements IAuthService{
     private CustomUserDetailsService customUserDetailsService;
     private AuthenticationManager authenticationManager;
     private JwtUtilService jwtUtilService;
-    private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public AuthService(AuthenticationManager authenticationManager, UserRepository userRepository, CustomUserDetailsService customUserDetailsService, JwtUtilService jwtUtilService, PasswordEncoder passwordEncoder) {
+    public AuthService(AuthenticationManager authenticationManager, CustomUserDetailsService customUserDetailsService, JwtUtilService jwtUtilService, PasswordEncoder passwordEncoder) {
         this.authenticationManager = authenticationManager;
-        this.userRepository = userRepository;
         this.customUserDetailsService = customUserDetailsService;
         this.jwtUtilService = jwtUtilService;
         this.passwordEncoder = passwordEncoder;
@@ -42,10 +37,13 @@ public class AuthService implements IAuthService{
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
         } catch (Exception e) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return new ResponseEntity<>("Incorrect password.", HttpStatus.UNAUTHORIZED);
+        }
+        if(!customUserDetailsService.loadUserByUsername(user.getEmail()).isEnabled()) {
+            return new ResponseEntity<>("Account disabled.", HttpStatus.LOCKED);
         }
 
-        UserDetails userDetails = customUserDetailsService.loadUserByUsername(user.getEmail());
+        CustomUserDetails userDetails = (CustomUserDetails) customUserDetailsService.loadUserByUsername(user.getEmail());
         String jwt = jwtUtilService.generateToken(userDetails);
 
         Cookie cookie = new Cookie("JWToken", jwt);
@@ -55,13 +53,7 @@ public class AuthService implements IAuthService{
         cookie.setPath("/");
         response.addCookie(cookie);
 
-        //urmatoarea linie genereaza cast exception
-        /*
-        CustomUserDetails customUserDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        user = customUserDetails.getUserEntity();
-        */
-        CustomUserDetails customUserDetails = (CustomUserDetails) userDetails;
-        return new ResponseEntity<>(customUserDetails.getUserEntity().getAuthority().getRole(), HttpStatus.OK);
+        return new ResponseEntity<>(userDetails.getUserEntity().getAuthority().getRole(), HttpStatus.OK);
     }
 
     //delete cookies
@@ -80,8 +72,15 @@ public class AuthService implements IAuthService{
     }
 
     @Override
-    public User getUserDetails() {
-        CustomUserDetails customUserDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return customUserDetails.getUserEntity();
+    public ResponseEntity<User> getUserDetails(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        String jwt = null;
+        for(Cookie cookie: cookies) {
+            if(cookie.getName().equals("JWToken"))
+                jwt = cookie.getValue();
+        }
+        String email = jwtUtilService.extractUsername(jwt);
+        CustomUserDetails user = (CustomUserDetails) customUserDetailsService.loadUserByUsername(email);
+        return new ResponseEntity<>(user.getUserEntity(), HttpStatus.OK);
     }
 }

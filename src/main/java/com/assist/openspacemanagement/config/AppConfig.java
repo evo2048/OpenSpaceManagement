@@ -1,4 +1,4 @@
-package com.assist.openspacemanagement.security;
+package com.assist.openspacemanagement.config;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;

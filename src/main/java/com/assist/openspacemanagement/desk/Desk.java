@@ -19,4 +19,28 @@ public class Desk {
     @OneToOne
     @JoinColumn(name = "userId")
     private User userAssigned;
+
+    public Integer getDeskId() {
+        return deskId;
+    }
+
+    public void setDeskId(Integer deskId) {
+        this.deskId = deskId;
+    }
+
+    public Office getOffice() {
+        return office;
+    }
+
+    public void setOffice(Office office) {
+        this.office = office;
+    }
+
+    public User getUserAssigned() {
+        return userAssigned;
+    }
+
+    public void setUserAssigned(User userAssigned) {
+        this.userAssigned = userAssigned;
+    }
 }

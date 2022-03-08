@@ -1,4 +1,4 @@
-package com.assist.openspacemanagement.security.jwt;
+package com.assist.openspacemanagement.utils.jwt;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

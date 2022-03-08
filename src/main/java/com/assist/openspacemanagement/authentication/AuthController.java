@@ -20,16 +20,12 @@ public class AuthController {
         return authService.logout(request,response);
     }
 
-    //necesita si compararea parolelor altfel parolele sunt inutile
-    //si trebuie verificat daca contul este enabled = true altfel mesaj legat de acest aspect
     @PostMapping("/login")
-    public ResponseEntity<String> confirmAuthentification(@RequestBody User user, HttpServletResponse response) {
+    public ResponseEntity<String> confirmAuthentication(@RequestBody User user, HttpServletResponse response) {
         return authService.authentication(user,response);
     }
 
     @GetMapping(value = "/get-user-details")
-    public User getUserDetails() {
-        return authService.getUserDetails();
-    }
+    public ResponseEntity<User> getUserDetails(HttpServletRequest request) { return authService.getUserDetails(request); }
 
 }

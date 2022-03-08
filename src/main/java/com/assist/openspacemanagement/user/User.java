@@ -39,7 +39,6 @@ public class User {
     @Column
     private boolean accountEnabled = true;
 
-
     @ManyToOne
     @JoinColumn(name = "authorityId")
     private Authority authority;
@@ -51,6 +50,8 @@ public class User {
     @OneToOne(mappedBy = "userAssigned")
     private Desk deskAssigned;
 
+    @OneToOne(mappedBy = "userRequest")
+    private RemoteWork remoteWorkRequest;
 
     public Integer getUserId() {
         return userId;
@@ -148,4 +149,11 @@ public class User {
         this.deskAssigned = deskAssigned;
     }
 
+    public RemoteWork getRemoteWorkRequest() {
+        return remoteWorkRequest;
+    }
+
+    public void setRemoteWorkRequest(RemoteWork remoteWorkRequest) {
+        this.remoteWorkRequest = remoteWorkRequest;
+    }
 }

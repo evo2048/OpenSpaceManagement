@@ -9,5 +9,5 @@ import javax.servlet.http.HttpServletResponse;
 public interface IAuthService {
     public ResponseEntity<String> authentication(User user, HttpServletResponse response);
     public ResponseEntity<String> logout(HttpServletRequest request,HttpServletResponse response);
-    public User getUserDetails();
+    public ResponseEntity<User> getUserDetails(HttpServletRequest request);
 }

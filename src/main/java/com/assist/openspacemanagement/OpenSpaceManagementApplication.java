@@ -1,6 +1,6 @@
 package com.assist.openspacemanagement;
 
-import com.assist.openspacemanagement.security.AppConfig;
+import com.assist.openspacemanagement.config.AppConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

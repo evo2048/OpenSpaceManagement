@@ -1,8 +1,7 @@
-package com.assist.openspacemanagement.security;
+package com.assist.openspacemanagement.utils.userDetails;
 import com.assist.openspacemanagement.user.User;
 import com.assist.openspacemanagement.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

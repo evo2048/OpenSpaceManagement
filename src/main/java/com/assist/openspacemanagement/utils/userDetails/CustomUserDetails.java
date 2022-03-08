@@ -1,4 +1,4 @@
-package com.assist.openspacemanagement.security;
+package com.assist.openspacemanagement.utils.userDetails;
 
 import com.assist.openspacemanagement.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
