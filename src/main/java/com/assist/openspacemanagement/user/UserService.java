@@ -14,12 +14,11 @@ public class UserService implements IUserService{
     private UserRepository userRepository;
 
     @Override
-    public ResponseEntity<String> serviceAddUser(JSONObject jsonObject) {
-        User user = Diverse.jsonToUser(jsonObject);
+    public ResponseEntity<String> serviceAddUser(User user) {
         try {
             userRepository.save(user);
         } catch (Exception e) {
-            return new ResponseEntity<String>(e.toString(),HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.toString(),HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>("User add with successfully", HttpStatus.CREATED);
     }
@@ -36,9 +35,9 @@ public class UserService implements IUserService{
 
     @Override
     public ResponseEntity<String> serviceDezactivatedUser(int id) {
-        User user = userRepository.getById(id);
-        user.setAccountEnabled(false);
         try{
+            User user = userRepository.getById(id);
+            user.setAccountEnabled(false);
             userRepository.save(user);
         }catch (Exception e){
             new ResponseEntity<String>("Error",HttpStatus.NOT_FOUND);
@@ -48,9 +47,9 @@ public class UserService implements IUserService{
 
     @Override
     public ResponseEntity<String> serviceAactivatedUser(int id) {
-        User user = userRepository.getById(id);
-        user.setAccountEnabled(true);
         try{
+            User user = userRepository.getById(id);
+            user.setAccountEnabled(true);
             userRepository.save(user);
         }catch (Exception e){
             new ResponseEntity<String>("Error",HttpStatus.NOT_FOUND);

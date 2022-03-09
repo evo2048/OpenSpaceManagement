@@ -35,7 +35,6 @@ public class Diverse {
         user.setAccountEnabled(true);
         user.setDeskAssigned(null);
         user.setOffices(null);
-
         return user;
     }
 }

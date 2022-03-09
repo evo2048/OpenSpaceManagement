@@ -37,4 +37,68 @@ public class Office {
     @OneToMany
     @JsonIgnore
     private List<Desk> desks;
+
+    public Integer getOfficeId() {
+        return officeId;
+    }
+
+    public void setOfficeId(Integer officeId) {
+        this.officeId = officeId;
+    }
+
+    public String getOfficeName() {
+        return officeName;
+    }
+
+    public void setOfficeName(String officeName) {
+        this.officeName = officeName;
+    }
+
+    public Integer getFloorNumber() {
+        return floorNumber;
+    }
+
+    public void setFloorNumber(Integer floorNumber) {
+        this.floorNumber = floorNumber;
+    }
+
+    public Integer getDeskCount() {
+        return deskCount;
+    }
+
+    public void setDeskCount(Integer deskCount) {
+        this.deskCount = deskCount;
+    }
+
+    public Integer getUsableDeskCount() {
+        return usableDeskCount;
+    }
+
+    public void setUsableDeskCount(Integer usableDeskCount) {
+        this.usableDeskCount = usableDeskCount;
+    }
+
+    public User getOfficeAdmin() {
+        return officeAdmin;
+    }
+
+    public void setOfficeAdmin(User officeAdmin) {
+        this.officeAdmin = officeAdmin;
+    }
+
+    public Building getBuilding() {
+        return building;
+    }
+
+    public void setBuilding(Building building) {
+        this.building = building;
+    }
+
+    public List<Desk> getDesks() {
+        return desks;
+    }
+
+    public void setDesks(List<Desk> desks) {
+        this.desks = desks;
+    }
 }

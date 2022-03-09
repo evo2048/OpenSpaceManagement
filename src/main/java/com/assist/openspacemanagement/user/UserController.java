@@ -13,8 +13,8 @@ public class UserController {
 
     // add new user
     @PostMapping("/user")
-    public ResponseEntity<String> addUser(@RequestBody JSONObject jsonObject){
-        return userService.serviceAddUser(jsonObject);
+    public ResponseEntity<String> addUser(@RequestBody User user){
+        return userService.serviceAddUser(user);
     }
 
     //updated user

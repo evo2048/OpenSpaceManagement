@@ -21,6 +21,7 @@ public class Building {
     @Column
     private String address;
 
+
     @OneToMany(mappedBy = "building")
     @JsonIgnore
     private List<Office> officeList;
