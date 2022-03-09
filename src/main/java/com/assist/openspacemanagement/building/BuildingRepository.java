@@ -13,7 +13,7 @@ public interface BuildingRepository extends JpaRepository<Building,Integer>{
 
     @Modifying
     @Query(value="select desks.user_id from Buildings " +
-            "INNER JOIN Offices on Buildings.building_id = Offices.building_id " +
+            "INNER JOIN Offices on :id = Offices.building_id " +
             "LEFT JOIN Desks on Offices.office_id = Desks.office_id",nativeQuery = true)
     List<Integer> getUserAssigned(int id);
 
