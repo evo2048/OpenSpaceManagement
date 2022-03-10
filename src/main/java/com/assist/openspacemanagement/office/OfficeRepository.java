@@ -8,15 +8,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 public interface OfficeRepository extends JpaRepository<Office,Integer> {
-    @Query(value="select * from offices where building_id = :id",nativeQuery = true)
-    List<Office> getAllOfficeFromBuilding(int id);
-
-    @Modifying
-    @Transactional
-    @Query(value="delete from offices where office_id = :id",nativeQuery = true)
-    void removeOfficeFromDatabase(int id);
-
     @Query(value="select desks.user_id from Offices " +
             "LEFT JOIN Desks on :id = Desks.office_id",nativeQuery = true)
     List<Integer> getAllUserAssignedOffice(int id);
+
+    @Query(value = "select desks.office_id from Offices LEFT JOIN Desks On Offices.office_id = Desks.office_id " +
+            "where Desks.user_id = :user_id",nativeQuery = true)
+    Integer findIdOfficeForUser(int user_id);
 }

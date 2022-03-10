@@ -39,6 +39,9 @@ public class User {
     @Column
     private boolean accountEnabled = true;
 
+    @Column
+    private Integer remoteWorkPercentage;
+
     @ManyToOne
     @JoinColumn(name = "authorityId")
     private Authority authority;
@@ -47,11 +50,13 @@ public class User {
     @JsonIgnore
     private List<Office> offices;
 
+    /*
     @OneToOne(mappedBy = "userAssigned")
     private Desk deskAssigned;
+     */
 
-    @OneToOne(mappedBy = "userRequest")
-    private RemoteWork remoteWorkRequest;
+
+
 
     public Integer getUserId() {
         return userId;
@@ -141,6 +146,7 @@ public class User {
         this.offices = offices;
     }
 
+    /*
     public Desk getDeskAssigned() {
         return deskAssigned;
     }
@@ -149,6 +155,16 @@ public class User {
         this.deskAssigned = deskAssigned;
     }
 
+     */
+
+    public Integer getRemoteWorkPercentage() {
+        return remoteWorkPercentage;
+    }
+
+    public void setRemoteWorkPercentage(Integer remoteWorkPercentage) {
+        this.remoteWorkPercentage = remoteWorkPercentage;
+    }
+    /*
     public RemoteWork getRemoteWorkRequest() {
         return remoteWorkRequest;
     }
@@ -156,4 +172,6 @@ public class User {
     public void setRemoteWorkRequest(RemoteWork remoteWorkRequest) {
         this.remoteWorkRequest = remoteWorkRequest;
     }
+
+     */
 }

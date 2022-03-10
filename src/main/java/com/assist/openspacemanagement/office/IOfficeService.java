@@ -1,5 +1,6 @@
 package com.assist.openspacemanagement.office;
 
+import net.minidev.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -15,7 +16,13 @@ public interface IOfficeService {
     ResponseEntity<String> serviceRemoveOffice(int id);
 
     //get all offices from a building by building_id
-    List<Office> serviceGetAllOfficeFromBuilding(int buildingId);
+    List<Office> serviceGetAllOffice();
+
+    //get status for all office
+    List<JSONObject> serviceGetAllOfficeStatus();
+
+    //get one office status
+    ResponseEntity<Object> serviceGetOneOfficeStatus(int id);
 
     //get one office
     ResponseEntity<Object> serviceGetOneOffice(int id);

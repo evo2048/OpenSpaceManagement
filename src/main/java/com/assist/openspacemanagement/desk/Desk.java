@@ -2,6 +2,7 @@ package com.assist.openspacemanagement.desk;
 
 import com.assist.openspacemanagement.office.Office;
 import com.assist.openspacemanagement.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 

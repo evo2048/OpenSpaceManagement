@@ -4,6 +4,7 @@ import com.assist.openspacemanagement.user.User;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "remote")
 public class RemoteWork {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,9 +19,15 @@ public class RemoteWork {
     @Column
     private Integer receiveId;
 
-    @OneToOne
-    @JoinColumn(name = "userId")
-    private User userRequest;
+    @Column
+    private String motivation;
+
+    @Column
+    private String responseMotivation;
+
+    @Column
+    private Integer percentage;
+
 
     public Integer getRequestId() {
         return requestId;
@@ -54,11 +61,28 @@ public class RemoteWork {
         this.receiveId = receiveId;
     }
 
-    public User getUserRequest() {
-        return userRequest;
+
+    public String getMotivation() {
+        return motivation;
     }
 
-    public void setUserRequest(User userRequest) {
-        this.userRequest = userRequest;
+    public void setMotivation(String motivation) {
+        this.motivation = motivation;
+    }
+
+    public String getResponseMotivation() {
+        return responseMotivation;
+    }
+
+    public void setResponseMotivation(String responseMotivation) {
+        this.responseMotivation = responseMotivation;
+    }
+
+    public Integer getPercentage() {
+        return percentage;
+    }
+
+    public void setPercentage(Integer percentage) {
+        this.percentage = percentage;
     }
 }

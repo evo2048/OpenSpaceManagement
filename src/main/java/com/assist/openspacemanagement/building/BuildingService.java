@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -51,7 +52,7 @@ public class BuildingService implements IBuildingService{
 
     @Override
     public List<Building> serviceGetAllBuildings() {
-        return buildingRepository.getAllBuildingFromDatabase();
+        return buildingRepository.findAll();
     }
 
     // delete building only no have office
@@ -61,7 +62,7 @@ public class BuildingService implements IBuildingService{
             List<Integer> listUserAssigned = buildingRepository.getUserAssigned(id);
             if(!listUserAssigned.isEmpty())
                 return new ResponseEntity<>("This building cannot be delete!", HttpStatus.BAD_REQUEST);
-            buildingRepository.deleteBuildingById(id);
+            buildingRepository.deleteAllById(Collections.singleton(id));
         }catch (Exception e){
             e.printStackTrace();
             return new ResponseEntity<>("An error occurred", HttpStatus.BAD_REQUEST);

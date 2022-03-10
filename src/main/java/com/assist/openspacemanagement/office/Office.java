@@ -26,16 +26,18 @@ public class Office {
     @Column
     private Integer usableDeskCount;
 
-    @ManyToOne
+    @Column
+    private Integer occupiedDeskCount;
+
+    @ManyToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "userId")
     private User officeAdmin;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "buildingId")
     private Building building;
 
-    @OneToMany
-    @JsonIgnore
+    @OneToMany(mappedBy = "office")
     private List<Desk> desks;
 
     public Integer getOfficeId() {
@@ -100,5 +102,13 @@ public class Office {
 
     public void setDesks(List<Desk> desks) {
         this.desks = desks;
+    }
+
+    public Integer getOccupiedDeskCount() {
+        return occupiedDeskCount;
+    }
+
+    public void setOccupiedDeskCount(Integer occupiedDeskCount) {
+        this.occupiedDeskCount = occupiedDeskCount;
     }
 }

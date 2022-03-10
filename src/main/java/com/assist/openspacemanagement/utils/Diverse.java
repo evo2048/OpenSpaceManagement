@@ -1,40 +1,36 @@
 package com.assist.openspacemanagement.utils;
 
-import com.assist.openspacemanagement.authority.Authority;
+import com.assist.openspacemanagement.office.Office;
 import com.assist.openspacemanagement.user.User;
 import net.minidev.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class Diverse {
-    public static User jsonToUser(JSONObject jsonObject){
-        User user = new User();
-        user.setFristName(jsonObject.getAsString("firstName"));
-        user.setLastName(jsonObject.getAsString("lastName"));
-        user.setEmail(jsonObject.getAsString("email"));
-        user.setPassword(jsonObject.getAsString("password"));
+    public static JSONObject statusToJson(Office office){
+        JSONObject statusOffice = new JSONObject();
+        statusOffice.appendField("officeName",office.getOfficeName());
+        statusOffice.appendField("buildingName",office.getBuilding().getBuildingName());
+        statusOffice.appendField("floorNumber",office.getFloorNumber());
+        statusOffice.appendField("officeAdmin",office.getOfficeAdmin().getFristName() + " "
+                                                                + office.getOfficeAdmin().getLastName());
+        //add all employee to status for a specific office
+        List<String> lstNameOfEmployee = new ArrayList<>();
+        office.getDesks().forEach(desk -> {
+            lstNameOfEmployee.add(desk.getUserAssigned().getFristName() + " " + desk.getUserAssigned().getLastName());
+        });
+        statusOffice.appendField("employee", lstNameOfEmployee);
 
-        String role = jsonObject.getAsString("role");
+        statusOffice.appendField("totalDesk",office.getDeskCount());
+        statusOffice.appendField("usableDesk",office.getUsableDeskCount());
+        statusOffice.appendField("occupiedDesk",office.getOccupiedDeskCount());
+        statusOffice.appendField("freeDesk",office.getUsableDeskCount() - office.getOccupiedDeskCount());
+        //computing percentage for occupation desk
+        float percentage = (float)office.getOccupiedDeskCount()/office.getUsableDeskCount();
+        statusOffice.appendField("occupationPercentage",percentage* 100+"%");
 
-        int val = 0;
-
-        if(role.equals("OFFICE-ADMIN"))
-            val = 2;
-        else if (role.equals("EMPLOYEE"))
-            val = 3;
-        else
-            val = 1;
-
-        Authority authority = new Authority();
-        authority.setAuthorityId(val);
-        user.setAuthority(authority);
-
-        user.setGender(jsonObject.getAsString("gender"));
-        user.setDateOfBirth(jsonObject.getAsString("date-of-birth"));
-        user.setNationality(jsonObject.getAsString("nationality"));
-
-        user.setAccountEnabled(true);
-        user.setDeskAssigned(null);
-        user.setOffices(null);
-        return user;
+        return statusOffice;
     }
 }

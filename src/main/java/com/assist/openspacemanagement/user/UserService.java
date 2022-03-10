@@ -1,7 +1,5 @@
 package com.assist.openspacemanagement.user;
 
-import com.assist.openspacemanagement.utils.Diverse;
-import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,8 +8,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService implements IUserService{
 
+
+    public static UserRepository userRepository;
+
     @Autowired
-    private UserRepository userRepository;
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     public ResponseEntity<String> serviceAddUser(User user) {
@@ -34,7 +37,7 @@ public class UserService implements IUserService{
     }
 
     @Override
-    public ResponseEntity<String> serviceDezactivatedUser(int id) {
+    public ResponseEntity<String> serviceDeactivateUser(int id) {
         try{
             User user = userRepository.getById(id);
             user.setAccountEnabled(false);
@@ -46,7 +49,7 @@ public class UserService implements IUserService{
     }
 
     @Override
-    public ResponseEntity<String> serviceAactivatedUser(int id) {
+    public ResponseEntity<String> serviceActivatedUser(int id) {
         try{
             User user = userRepository.getById(id);
             user.setAccountEnabled(true);

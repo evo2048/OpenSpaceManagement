@@ -1,6 +1,5 @@
 package com.assist.openspacemanagement.user;
 
-import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,12 +25,12 @@ public class UserController {
     //update for disable account
     @PutMapping("/user/lock")
     public ResponseEntity<String> lockUser(@RequestParam("id") int id){
-        return userService.serviceDezactivatedUser(id);
+        return userService.serviceDeactivateUser(id);
     }
 
     // update for enabled account
     @PutMapping("/user/unlock")
     public ResponseEntity<String> unlockedUser(@RequestParam("id") int id){
-        return userService.serviceDezactivatedUser(id);
+        return userService.serviceActivatedUser(id);
     }
 }
