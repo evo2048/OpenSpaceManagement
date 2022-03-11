@@ -1,5 +1,7 @@
 package com.assist.openspacemanagement.utils;
 
+import com.assist.openspacemanagement.desk.Desk;
+import com.assist.openspacemanagement.desk.DeskService;
 import com.assist.openspacemanagement.office.Office;
 import com.assist.openspacemanagement.user.User;
 import net.minidev.json.JSONObject;
@@ -32,5 +34,29 @@ public class Diverse {
         statusOffice.appendField("occupationPercentage",percentage* 100+"%");
 
         return statusOffice;
+    }
+    public static JSONObject userToStatus(User user){
+        JSONObject jsonObject = new JSONObject();
+
+        jsonObject.appendField("FirstName",user.getFristName());
+        jsonObject.appendField("LastName",user.getLastName());
+
+        Desk desk = DeskService.deskRepository.searchForExistingDesk(user.getUserId());
+        Office office;
+        if(desk != null){
+            office = desk.getOffice();
+            if(office != null) {
+                jsonObject.appendField("Building", office.getBuilding().getBuildingName());
+                jsonObject.appendField("Office", office.getOfficeName());
+            }
+        }
+        else {
+            jsonObject.appendField("Building", "none");
+            jsonObject.appendField("Office", "none");
+        }
+
+        jsonObject.appendField("RemoteWork",user.getRemoteWorkPercentage());
+
+        return jsonObject;
     }
 }

@@ -1,9 +1,14 @@
 package com.assist.openspacemanagement.user;
 
+import com.assist.openspacemanagement.utils.Diverse;
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class UserService implements IUserService{
@@ -58,5 +63,32 @@ public class UserService implements IUserService{
             new ResponseEntity<String>("Error",HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>("Operation successfully!",HttpStatus.OK);
+    }
+
+    @Override
+    public List<JSONObject> getStatusUserForEmployee(String filterByWord) {
+        List<JSONObject> lstUser = new ArrayList<>();
+        try{
+            List<User> lst = userRepository.findByWord(filterByWord);
+            lst.forEach(user -> {
+                 JSONObject obj = Diverse.userToStatus(user);
+                 lstUser.add(obj);
+            });
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+        return lstUser;
+    }
+
+    @Override
+    public List<User> getStatusAllUser(String filterByWord) {
+        List<User> lstUsers;
+        try{
+            lstUsers = userRepository.findByWord(filterByWord);
+        }catch (Exception e){
+            return null;
+        }
+        return lstUsers;
     }
 }

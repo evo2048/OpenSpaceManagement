@@ -22,6 +22,7 @@ public class BuildingController {
     public List<Building> getAllBuildings(){
         return buildingService.serviceGetAllBuildings();
     }
+
     // add a building
     @PostMapping("/building")
     public ResponseEntity<String> addBuilding(@RequestBody Building building){

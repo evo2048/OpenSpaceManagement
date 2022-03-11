@@ -10,8 +10,14 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class DeskService implements IDeskService{
+
+    public static DeskRepository deskRepository;
+
     @Autowired
-    private DeskRepository deskRepository;
+    public DeskService(DeskRepository deskRepository) {
+        this.deskRepository = deskRepository;
+    }
+
 
     @Override
     public ResponseEntity<String> serviceAddDesk(Desk desk) {

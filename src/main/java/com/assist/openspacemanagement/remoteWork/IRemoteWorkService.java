@@ -10,4 +10,7 @@ public interface IRemoteWorkService {
 
     // get all request remote work
     List<RemoteWork> serviceGetAllRequest();
+
+    //update request
+    ResponseEntity<Object> updateRequest(RemoteWork remoteWork);
 }
