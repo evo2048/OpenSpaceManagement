@@ -13,9 +13,8 @@ public class Desk {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer deskId;
 
-    @ManyToOne
-    @JoinColumn(name = "officeId")
-    private Office office;
+    @Column
+    private Integer officeId;
 
     @OneToOne
     @JoinColumn(name = "userId")
@@ -29,12 +28,12 @@ public class Desk {
         this.deskId = deskId;
     }
 
-    public Office getOffice() {
-        return office;
+    public Integer getOfficeId() {
+        return officeId;
     }
 
-    public void setOffice(Office office) {
-        this.office = office;
+    public void setOfficeId(Integer officeId) {
+        this.officeId = officeId;
     }
 
     public User getUserAssigned() {

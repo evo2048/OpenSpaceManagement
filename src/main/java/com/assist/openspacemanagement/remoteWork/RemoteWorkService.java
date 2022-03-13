@@ -25,7 +25,7 @@ public class RemoteWorkService implements IRemoteWorkService {
 
             RemoteWork remoteWorkOld = remoteWorkRepository.findBySenderId(remoteWork.getSenderId());
             if (remoteWorkOld != null) {
-                if (!remoteWorkOld.status.equals("pending")) {
+                if (!remoteWorkOld.getStatus().equals("pending")) {
                     return new ResponseEntity<>("You have a pending request!", HttpStatus.BAD_REQUEST);
                 }
             }
@@ -64,7 +64,7 @@ public class RemoteWorkService implements IRemoteWorkService {
                 if(remoteWork.getPercentage() == 100){
                     Desk desk = DeskService.deskRepository.searchForExistingDesk(remoteWork.getSenderId());
                     DeskService.deskRepository.deleteById(desk.getDeskId());
-                    OfficeService.updateOfficeOccupationDesk(desk.getOffice().getOfficeId(),false);
+                    OfficeService.updateOfficeOccupationDesk(desk.getOfficeId(),false);
                 }
             }
         }catch(Exception e){

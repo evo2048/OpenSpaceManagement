@@ -1,5 +1,6 @@
 package com.assist.openspacemanagement.building;
 
+import net.minidev.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -15,4 +16,6 @@ public interface IBuildingService {
     List<Building> serviceGetAllBuildings();
     //remove a building by id
     ResponseEntity<String> serviceRemoveBuilding(int id);
+    //get building metrics
+    JSONObject serviceGetBuildingsMetrics(int id);
 }

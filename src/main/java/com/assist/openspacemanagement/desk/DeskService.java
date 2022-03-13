@@ -22,11 +22,11 @@ public class DeskService implements IDeskService{
     @Override
     public ResponseEntity<String> serviceAddDesk(Desk desk) {
         try{
-            int officeID = desk.getOffice().getOfficeId();
+            int officeID = desk.getOfficeId();
 
             Desk oldDesk = deskRepository.searchForExistingDesk(desk.getUserAssigned().getUserId());
             if(oldDesk != null){
-                OfficeService.updateOfficeOccupationDesk(oldDesk.getOffice().getOfficeId(),false);
+                OfficeService.updateOfficeOccupationDesk(oldDesk.getOfficeId(),false);
                 deskRepository.deleteById(oldDesk.getDeskId());
             }
 

@@ -134,4 +134,8 @@ public class OfficeService implements IOfficeService{
         }
         return true ;
     }
+
+    public static OfficeRepository getOfficeRepository() {
+        return officeRepository;
+    }
 }

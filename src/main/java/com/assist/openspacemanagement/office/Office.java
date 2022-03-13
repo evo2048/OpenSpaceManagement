@@ -37,7 +37,7 @@ public class Office {
     @JoinColumn(name = "buildingId")
     private Building building;
 
-    @OneToMany(mappedBy = "office")
+    @OneToMany(mappedBy = "officeId")
     private List<Desk> desks;
 
     public Integer getOfficeId() {

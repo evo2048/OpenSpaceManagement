@@ -68,7 +68,7 @@ public class AuthService implements IAuthService{
                 response.addCookie(cookie);
             }
         }
-        return new ResponseEntity<>("Logout with succes!",HttpStatus.OK);
+        return new ResponseEntity<>("Logout with success!",HttpStatus.OK);
     }
 
     @Override

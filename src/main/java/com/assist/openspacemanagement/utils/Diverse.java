@@ -3,6 +3,7 @@ package com.assist.openspacemanagement.utils;
 import com.assist.openspacemanagement.desk.Desk;
 import com.assist.openspacemanagement.desk.DeskService;
 import com.assist.openspacemanagement.office.Office;
+import com.assist.openspacemanagement.office.OfficeService;
 import com.assist.openspacemanagement.user.User;
 import net.minidev.json.JSONObject;
 
@@ -44,7 +45,7 @@ public class Diverse {
         Desk desk = DeskService.deskRepository.searchForExistingDesk(user.getUserId());
         Office office;
         if(desk != null){
-            office = desk.getOffice();
+            office = OfficeService.getOfficeRepository().getById(desk.getOfficeId());
             if(office != null) {
                 jsonObject.appendField("Building", office.getBuilding().getBuildingName());
                 jsonObject.appendField("Office", office.getOfficeName());

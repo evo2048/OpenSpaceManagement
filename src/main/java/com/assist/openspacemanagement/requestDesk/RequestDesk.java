@@ -1,11 +1,10 @@
-package com.assist.openspacemanagement.remoteWork;
+package com.assist.openspacemanagement.requestDesk;
 
-import com.assist.openspacemanagement.user.User;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "remote")
-public class RemoteWork {
+@Table(name="requestdesk")
+public class RequestDesk {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer requestId;
@@ -23,9 +22,8 @@ public class RemoteWork {
     @Column
     private String responseMotivation;
 
-    @Column
-    private Integer percentage;
-
+    @Column()
+    private Integer officeId;
 
     public Integer getRequestId() {
         return requestId;
@@ -69,11 +67,11 @@ public class RemoteWork {
         this.responseMotivation = responseMotivation;
     }
 
-    public Integer getPercentage() {
-        return percentage;
+    public Integer getOfficeId() {
+        return officeId;
     }
 
-    public void setPercentage(Integer percentage) {
-        this.percentage = percentage;
+    public void setOfficeId(Integer officeId) {
+        this.officeId = officeId;
     }
 }

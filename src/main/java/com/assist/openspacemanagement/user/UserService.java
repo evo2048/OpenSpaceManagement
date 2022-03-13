@@ -45,10 +45,14 @@ public class UserService implements IUserService{
     public ResponseEntity<String> serviceDeactivateUser(int id) {
         try{
             User user = userRepository.getById(id);
-            user.setAccountEnabled(false);
-            userRepository.save(user);
+            if (!user.getAuthority().getRole().equals("ADMIN")) {
+                user.setAccountEnabled(false);
+                userRepository.save(user);
+            }else{
+                return new ResponseEntity<>("You are ADMIN",HttpStatus.BAD_REQUEST);
+            }
         }catch (Exception e){
-            new ResponseEntity<String>("Error",HttpStatus.NOT_FOUND);
+            new ResponseEntity<>("An error occurred",HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>("Operation successfully!",HttpStatus.OK);
     }
@@ -60,7 +64,7 @@ public class UserService implements IUserService{
             user.setAccountEnabled(true);
             userRepository.save(user);
         }catch (Exception e){
-            new ResponseEntity<String>("Error",HttpStatus.NOT_FOUND);
+            new ResponseEntity<String>("An error occurred",HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>("Operation successfully!",HttpStatus.OK);
     }
@@ -75,7 +79,6 @@ public class UserService implements IUserService{
                  lstUser.add(obj);
             });
         }catch (Exception e){
-            e.printStackTrace();
             return null;
         }
         return lstUser;

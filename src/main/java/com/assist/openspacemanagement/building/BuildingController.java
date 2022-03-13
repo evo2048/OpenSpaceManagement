@@ -1,5 +1,6 @@
 package com.assist.openspacemanagement.building;
 
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,12 @@ public class BuildingController {
     @GetMapping("/building/all")
     public List<Building> getAllBuildings(){
         return buildingService.serviceGetAllBuildings();
+    }
+
+    //get building metrics
+    @GetMapping("/building/metrics")
+    public JSONObject getBuildingMetrics(@RequestParam("id") int buildingId){
+        return buildingService.serviceGetBuildingsMetrics(buildingId);
     }
 
     // add a building
