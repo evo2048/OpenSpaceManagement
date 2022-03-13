@@ -55,7 +55,7 @@ public class RequestDeskService implements IRequestDeskService{
                     desk.setOfficeId(requestDesk.getOfficeId());
                     desk.setUserAssigned(UserService.userRepository.findById(requestDesk.getSenderId()).get());
                     DeskService.deskRepository.save(desk);
-                }
+                }else return new ResponseEntity<>("This office no have free desk",HttpStatus.BAD_REQUEST);
             }
             requestDeskRepository.save(requestDesk);
         }catch (Exception e){
