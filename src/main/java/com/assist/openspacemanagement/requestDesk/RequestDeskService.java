@@ -4,6 +4,7 @@ import com.assist.openspacemanagement.desk.Desk;
 import com.assist.openspacemanagement.desk.DeskService;
 import com.assist.openspacemanagement.office.Office;
 import com.assist.openspacemanagement.office.OfficeService;
+import com.assist.openspacemanagement.user.User;
 import com.assist.openspacemanagement.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -51,10 +52,21 @@ public class RequestDeskService implements IRequestDeskService{
         try{
             if (requestDesk.getStatus().equals("accepted")){
                 if (OfficeService.updateOfficeOccupationDesk(requestDesk.getOfficeId(),true)) {
+                    Desk oldDesk = DeskService.deskRepository.searchForExistingDesk(requestDesk.getSenderId());
+
+                    if(oldDesk != null)
+                        DeskService.deskRepository.deleteById(oldDesk.getDeskId());
+
                     Desk desk = new Desk();
                     desk.setOfficeId(requestDesk.getOfficeId());
                     desk.setUserAssigned(UserService.userRepository.findById(requestDesk.getSenderId()).get());
                     DeskService.deskRepository.save(desk);
+
+                    User user = UserService.userRepository.findById(requestDesk.getSenderId()).get();
+                    if(user.getRemoteWorkPercentage() == 100){
+                        user.setRemoteWorkPercentage(0);
+                        UserService.userRepository.save(user);
+                    }
                 }else return new ResponseEntity<>("This office no have free desk",HttpStatus.BAD_REQUEST);
             }
             requestDeskRepository.save(requestDesk);

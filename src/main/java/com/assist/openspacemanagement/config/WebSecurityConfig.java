@@ -50,11 +50,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().cors();
         http.authorizeRequests()
-                .antMatchers("/office/admin/*", "/getDetails").hasAuthority("ADMIN")
-                .antMatchers("/office-management/*").hasAuthority("OFFICE_ADMIN")
-                .antMatchers("/user/*").hasAuthority("USER")
-                .antMatchers("/office/get-user-details").hasAnyAuthority("USER", "OFFICE_ADMIN", "ADMIN")
-                .antMatchers("/office/login", "/office/logout").permitAll();
+                .antMatchers("/management/login").permitAll()
+                .anyRequest().authenticated();
+
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
