@@ -22,7 +22,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> confirmAuthentication(@RequestBody User user, HttpServletResponse response) {
+    public ResponseEntity<Object> confirmAuthentication(@RequestBody User user, HttpServletResponse response) {
         return authService.authentication(user,response);
     }
 

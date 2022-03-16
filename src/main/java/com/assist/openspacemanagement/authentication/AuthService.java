@@ -4,6 +4,7 @@ import com.assist.openspacemanagement.utils.userDetails.CustomUserDetails;
 import com.assist.openspacemanagement.utils.userDetails.CustomUserDetailsService;
 import com.assist.openspacemanagement.utils.jwt.JwtUtilService;
 import com.assist.openspacemanagement.user.User;
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +34,7 @@ public class AuthService implements IAuthService{
     }
 
     @Override
-    public ResponseEntity<String> authentication(User user, HttpServletResponse response) {
+    public ResponseEntity<Object> authentication(User user, HttpServletResponse response) {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
         } catch (Exception e) {
@@ -46,14 +47,10 @@ public class AuthService implements IAuthService{
         CustomUserDetails userDetails = (CustomUserDetails) customUserDetailsService.loadUserByUsername(user.getEmail());
         String jwt = jwtUtilService.generateToken(userDetails);
 
-        Cookie cookie = new Cookie("JWToken", jwt);
-        cookie.setSecure(false);
-        cookie.setHttpOnly(true);
-        cookie.setMaxAge(-1);
-        cookie.setPath("/");
-        response.addCookie(cookie);
-
-        return new ResponseEntity<>(userDetails.getUserEntity().getAuthority().getRole(), HttpStatus.OK);
+        JSONObject obj = new JSONObject();
+        obj.appendField("role",userDetails.getUserEntity().getAuthority().getRole());
+        obj.appendField("token",jwt);
+        return new ResponseEntity<>(obj, HttpStatus.OK);
     }
 
     //delete cookies

@@ -1,6 +1,7 @@
 package com.assist.openspacemanagement.utils.jwt;
 
 import com.assist.openspacemanagement.utils.userDetails.CustomUserDetailsService;
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,6 +15,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
+import java.util.TreeMap;
 
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
@@ -33,19 +36,23 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String username = null;
         String token = null;
         String path = request.getRequestURI();
-        Cookie[] cookies = request.getCookies();
+        Map<String, String> mapQueryString = new TreeMap<>();
 
-        if(path.equals("/login") && cookies == null) {
-            filterChain.doFilter(request, response);
-            return;
+        if (request.getQueryString() != null) {
+            String[] queryArray = request.getQueryString().split("&");
+            for (String val : queryArray) {
+                String[] values = val.split("=");
+                mapQueryString.put(values[0], values[1]);
+            }
+
+            if (path.equals("/login")) {
+                filterChain.doFilter(request, response);
+                return;
+            }
         }
-
-        if(cookies!=null && cookies.length>0) {
-            for (Cookie cookie : cookies)
-                if (cookie.getName().equals("JWToken")) {
-                    token = cookie.getValue();
-                    username = jwtUtilService.extractUsername(token);
-                }
+        token = mapQueryString.get("token");
+        if(token != null) {
+            username = jwtUtilService.extractUsername(token);
             if(username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails userDetails = this.customUserDetailsService.loadUserByUsername(username);
                 if(jwtUtilService.validateToken(token, userDetails)) {
